@@ -1,16 +1,17 @@
 var winCount = 0;
 var lossCount = 0;
 var numberOfGuessesStart = 11; //to make game start with 10 lives
-var currentWord = "";
+var currentWord = "";	// sorry for the bad code, I want to keep working on this
+var reset = false;
 var listOfWords = ["Facebook", "Twitter", "Instagram",
 				   "Whatsapp", "Snapchat", "Spotify", 
 				   "Steam", "Evernote", "Chrome", "Gmail",
 				   "Reddit", "Tinder", "Slack", "Lyft",
 				   "Uber", "Facetime", "Netflix", "Kindle",
 				   "Youtube", "Amazon"];
-var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i",
+/*var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i",
 				"j", "k", "l", "m", "n", "o", "p", "q", "r",
-				"s", "t", "u", "v", "w", "x", "y", "z"];
+				"s", "t", "u", "v", "w", "x", "y", "z"];*/
 
 var randomlySelectedWord = listOfWords[Math.floor(Math.random() * listOfWords.length)];
 console.log(randomlySelectedWord);
@@ -23,7 +24,8 @@ function blanksGenerator() {
 }
 
 blanksGenerator();
-
+console.log(reset);
+console.log(randomlySelectedWord);
 document.onkeydown = function(event) {
 var start = event.key;
 	if (start === event.key){ 
@@ -32,23 +34,24 @@ var start = event.key;
 		document.getElementById("endScreen").style.visibility = "hidden";
 		numberOfGuessesStart--;
 		document.getElementById("numberOfGuesses").innerHTML = numberOfGuessesStart;
-		console.log(randomlySelectedWord);
 		var lettersGuessed = document.getElementById("lettersGuessed");
-		document.getElementById("lettersGuessed").innerHTML += event.key + "  ";
-			if (randomlySelectedWord.includes(lettersGuessed.innerHTML)){
+		lettersGuessed.innerHTML += event.key + "  ";
+		if (reset === true){
+		lettersGuessed.style.visibility = "visible";
+		}	
+			if (randomlySelectedWord.includes(event.key)){
 				document.getElementById("currentWord").innerHTML = event.key;
 			}
 				if (numberOfGuessesStart === 0){
+					reset = true;
 					document.getElementById("endScreen").style.visibility = "visible";
+					lettersGuessed.style.visibility = "hidden";
 					document.getElementById("endScreen").innerHTML = "GAME OVER - Press any key to start over"
 					lossCount++;
 					document.getElementById("lossCount").innerHTML = lossCount;
 					numberOfGuessesStart = 11;
+					
 				}
-	}
-
-	if (randomlySelectedWord.includes()) {
-
 	}
 }
 

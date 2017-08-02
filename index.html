@@ -15,6 +15,18 @@
 			<h3>Letters already guessed: </h3><h3 id="lettersGuessed"></h3>
 			<h3 id="endScreen"></h3>
 		</div>
+		<button>Click me any way you want</button>
+<script>
+  var button = document.querySelector("button");
+  button.addEventListener("mousedown", function(event) {
+    if (event.which == 1)
+      console.log("Left button");
+    else if (event.which == 2)
+      console.log("Middle button");
+    else if (event.which == 3)
+      console.log("Right button");
+  });
+</script>
 	<script src="assets/javascript/game.js"></script>
   </body>
 </html>
