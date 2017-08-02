@@ -2,13 +2,19 @@
 <html lang="en-us">
   <head>
     <meta charset="UTF-8">
-    <title>Hangman</title>
+    <title>Hangman | Name That App</title>
   </head>
   <body>
-
-    <script type="text/javascript">
-
-    </script>
-
+	<h1 id="title" style="text-align:center">Name That App</h1>
+	<h3 id="getStarted" style="text-align:center">Press any key to get started!</h3>
+		<div id="visibility" style="visibility:hidden">
+			<h3>Wins: </h3><h3 id="winCount"></h3>
+			<h3>Losses: </h3><h3 id="lossCount"></h3>
+			<h2>Current Word: </h2><h2 id="currentWord"></h2>
+			<h3>Number of guesses remaining: </h3><h3 id="numberOfGuesses"></h3>
+			<h3>Letters already guessed: </h3><h3 id="lettersGuessed"></h3>
+			<h3 id="endScreen"></h3>
+		</div>
+	<script src="assets/javascript/game.js"></script>
   </body>
 </html>
