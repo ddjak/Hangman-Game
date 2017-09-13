@@ -1,61 +1,112 @@
-var winCount = 0;
-var lossCount = 0;
-var numberOfGuessesStart = 11; //to make game start with 10 lives
-var currentWord = "";	// sorry for the bad code, I want to keep working on this
-var reset = false;
-var listOfWords = ["Facebook", "Twitter", "Instagram",
-				   "Whatsapp", "Snapchat", "Spotify", 
-				   "Steam", "Evernote", "Chrome", "Gmail",
-				   "Reddit", "Tinder", "Slack", "Lyft",
-				   "Uber", "Facetime", "Netflix", "Kindle",
-				   "Youtube", "Amazon"];
-/*var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i",
-				"j", "k", "l", "m", "n", "o", "p", "q", "r",
-				"s", "t", "u", "v", "w", "x", "y", "z"];*/
+var wordsList = ["facebook", "twitter", "instagram",
+				   "whatsapp", "snapchat", "spotify", 
+				   "steam", "evernote", "chrome", "gmail",
+				   "reddit", "tinder", "slack", "lyft",
+				   "uber", "facetime", "netflix", "kindle",
+				   "youtube", "amazon"];
+var chosenWord = "";
 
-var randomlySelectedWord = listOfWords[Math.floor(Math.random() * listOfWords.length)];
-console.log(randomlySelectedWord);
+var lettersInChosenWord = [];
+
+var numBlanks = 0;
+
+var blanksAndSuccesses = [];
+
+var wrongGuesses = [];
+
+var winCounter = 0;
+var lossCounter = 0;
+var numGuesses = 9;
+
+function startGame() {
+
+  numGuesses = 9;
+
+  chosenWord = wordsList[Math.floor(Math.random() * wordsList.length)];
+
+  lettersInChosenWord = chosenWord.split("");
+
+  numBlanks = lettersInChosenWord.length;
+
+  console.log(chosenWord);
+
+  blanksAndSuccesses = [];
+
+  wrongGuesses = [];
 
 
-function blanksGenerator() {
-	for (var i = 0; i < randomlySelectedWord.length; i++){
-		document.getElementById("currentWord").innerHTML += "_ ";
-	}
+  for (var i = 0; i < numBlanks; i++) {
+    blanksAndSuccesses.push("_");
+  }
+
+  console.log(blanksAndSuccesses);
+
+  document.getElementById("guesses-left").innerHTML = numGuesses;
+  document.getElementById("word-blanks").innerHTML = blanksAndSuccesses.join(" ");
+  document.getElementById("wrong-guesses").innerHTML = wrongGuesses.join(" ");
 }
 
-blanksGenerator();
-console.log(reset);
-console.log(randomlySelectedWord);
+
+function checkLetters(letter) {
+
+  var letterInWord = false;
+
+  for (var i = 0; i < numBlanks; i++) {
+    if (chosenWord[i] === letter) {
+      letterInWord = true;
+    }
+  }
+
+  if (letterInWord) {
+    for (var j = 0; j < numBlanks; j++) {
+      if (chosenWord[j] === letter) {
+        blanksAndSuccesses[j] = letter;
+      }
+    }
+
+    console.log(blanksAndSuccesses);
+  }
+
+  else {
+    wrongGuesses.push(letter);
+    numGuesses--;
+  }
+}
+
+function roundComplete() {
+
+  console.log("WinCount: " + winCounter + " | LossCount: " + lossCounter + " | NumGuesses: " + numGuesses);
+
+  document.getElementById("guesses-left").innerHTML = numGuesses;
+  document.getElementById("word-blanks").innerHTML = blanksAndSuccesses.join(" ");
+  document.getElementById("wrong-guesses").innerHTML = wrongGuesses.join(" ");
+
+  if (lettersInChosenWord.toString() === blanksAndSuccesses.toString()) {
+    winCounter++;
+    alert("You win!");
+
+    document.getElementById("win-counter").innerHTML = winCounter;
+    startGame();
+  }
+
+  else if (numGuesses === 0) {
+    lossCounter++;
+
+    alert("You lose");
+
+    document.getElementById("loss-counter").innerHTML = lossCounter;
+
+    startGame();
+  }
+}
+
+startGame();
+
 document.onkeydown = function(event) {
-var start = event.key;
-	if (start === event.key){ 
-		document.getElementById("visibility").style.visibility = "visible";
-		document.getElementById("getStarted").style.visibility = "hidden";
-		document.getElementById("endScreen").style.visibility = "hidden";
-		numberOfGuessesStart--;
-		document.getElementById("numberOfGuesses").innerHTML = numberOfGuessesStart;
-		var lettersGuessed = document.getElementById("lettersGuessed");
-		lettersGuessed.innerHTML += event.key + "  ";
-		if (reset === true){
-		lettersGuessed.style.visibility = "visible";
-		}	
-			if (randomlySelectedWord.includes(event.key)){
-				document.getElementById("currentWord").innerHTML = event.key;
-			}
-				if (numberOfGuessesStart === 0){
-					reset = true;
-					document.getElementById("endScreen").style.visibility = "visible";
-					lettersGuessed.style.visibility = "hidden";
-					document.getElementById("endScreen").innerHTML = "GAME OVER - Press any key to start over"
-					lossCount++;
-					document.getElementById("lossCount").innerHTML = lossCount;
-					numberOfGuessesStart = 11;
-					
-				}
-	}
-}
 
+  var letterGuessed = String.fromCharCode(event.keyCode).toLowerCase();
 
-document.getElementById("winCount").innerHTML = winCount;
+  checkLetters(letterGuessed);
 
-document.getElementById("lossCount").innerHTML = lossCount;
+  roundComplete();
+};
